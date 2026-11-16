@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CivicTrack — Community Meeting Decision Tracker</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>" />
+</head>
+<body>
+
+<!-- =====================================================================
+     SCREEN 1 — WELCOME SCREEN (Sign in / Create account)
+     This is the first thing a visitor sees. The main app below stays
+     hidden until someone signs in successfully.
+     ===================================================================== -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+
+    <div class="login-brand">
+      <div class="brand-mark">CT</div>
+      <div>
+        <h1>CivicTrack</h1>
+        <p>Community Meeting &amp; Decision Tracker</p>
+      </div>
+    </div>
+
+    <!-- Two tabs: switch between signing in and creating a new account -->
+    <div class="auth-tabs">
+      <button type="button" class="auth-tab active" data-auth="signin">Sign in</button>
+      <button type="button" class="auth-tab" data-auth="signup">Create account</button>
+    </div>
+
+    <!-- ---------- SIGN IN FORM ---------- -->
+    <form id="signinForm" class="login-form" autocomplete="off">
+      <label class="field">
+        <span>Email</span>
+        <input type="email" id="loginEmail" placeholder="you@lpu.in" required />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="loginPassword" placeholder="••••••••" required />
+      </label>
+      <p id="loginError" class="login-error" hidden></p>
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+      <p class="auth-switch">New here? <a href="#" data-auth="signup">Create an account</a></p>
+    </form>
+
+    <!-- ---------- SIGN UP FORM ---------- -->
+    <form id="signupForm" class="login-form" autocomplete="off" hidden>
+      <label class="field">
+        <span>Full name</span>
+        <input type="text" id="suName" placeholder="e.g. Adarsh" required />
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input type="email" id="suEmail" placeholder="you@lpu.in" required />
+      </label>
+      <div class="form-row">
+        <label class="field">
+          <span>Position <span class="dim">(optional)</span></span>
+          <input type="text" id="suTitle" placeholder="e.g. Block D Rep" />
+        </label>
+        <label class="field">
+          <span>Flat / Block <span class="dim">(optional)</span></span>
+          <input type="text" id="suBlock" placeholder="e.g. Block D" />
+        </label>
+      </div>
+      <div class="form-row">
+        <label class="field">
+          <span>Password</span>
+          <input type="password" id="suPassword" placeholder="At least 6 characters" required />
+        </label>
+        <label class="field">
+          <span>Confirm password</span>
+          <input type="password" id="suConfirm" placeholder="Type it again" required />
+        </label>
+      </div>
+      <p id="signupError" class="login-error" hidden></p>
+      <button type="submit" class="btn btn-primary btn-block">Create my account</button>
+      <p class="auth-switch">Already have an account? <a href="#" data-auth="signin">Sign in instead</a></p>
+    </form>
+
+  </div>
+</div>
+
+<!-- =====================================================================
+     SCREEN 2 — THE MAIN APP
+     Left sidebar = menu.  Top bar = page title + buttons.
+     The white area in the middle is filled in by app.js.
+     ===================================================================== -->
+<div id="app" class="app" hidden>
+
+  <!-- ---------- LEFT SIDEBAR (the menu) ---------- -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="brand-mark sm">CT</div>
+      <span class="sidebar-title">CivicTrack</span>
+      <button class="icon-btn sidebar-close" id="sidebarClose" title="Close menu">✕</button>
+    </div>
+
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-view="dashboard"><span class="nav-ico">◉</span>Dashboard</button>
+      <button class="nav-item" data-view="meetings"><span class="nav-ico">▤</span>Meetings</button>
+      <button class="nav-item" data-view="decisions"><span class="nav-ico">⚖</span>Decisions</button>
+      <button class="nav-item" data-view="actions"><span class="nav-ico">✓</span>Action Items<span class="nav-badge" id="navActionBadge" hidden>0</span></button>
+      <button class="nav-item" data-view="reminders"><span class="nav-ico">🔔</span>Reminders<span class="nav-badge" id="navReminderBadge" hidden>0</span></button>
+      <button class="nav-item" data-view="archive"><span class="nav-ico">🗄</span>Archive</button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button class="user-box" id="profileBtn" title="My account and settings">
+        <div class="avatar" id="sideAvatar">AN</div>
+        <div class="user-meta">
+          <strong id="sideName">—</strong>
+          <span id="sideRole">—</span>
+        </div>
+        <span class="dim">⚙</span>
+      </button>
+      <button class="btn btn-ghost btn-sm btn-block" id="logoutBtn">Sign out</button>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ---------- RIGHT SIDE (top bar + page content) ---------- -->
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" title="Menu">☰</button>
+      <div class="topbar-title">
+        <h2 id="viewTitle">Dashboard</h2>
+        <p id="viewSubtitle">Overview of your association's activity</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="themeBtn" title="Switch between light and dark">🌙</button>
+        <button class="icon-btn" id="bellBtn" title="Reminders">🔔<span class="dot" id="bellDot" hidden></span></button>
+      </div>
+    </header>
+
+    <main class="content" id="content"><!-- app.js writes every page in here --></main>
+  </div>
+</div>
+
+<!-- =====================================================================
+     POP-UP BOX — reused for every form (new meeting, new decision, …)
+     ===================================================================== -->
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <header class="modal-head">
+      <h3 id="modalTitle">Title</h3>
+      <button class="icon-btn" id="modalClose" title="Close">✕</button>
+    </header>
+    <div class="modal-body" id="modalBody"></div>
+    <footer class="modal-foot" id="modalFoot"></footer>
+  </div>
+</div>
+
+<!-- Small messages that slide in at the bottom-right corner -->
+<div class="toasts" id="toasts"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

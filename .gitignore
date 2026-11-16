@@ -1,0 +1,16 @@
+# Operating system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+
+# Exported backups from the app
+civictrack-backup-*.json
+
+# Documentation shared separately, not part of the website
+*.pdf

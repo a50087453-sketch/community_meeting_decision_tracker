@@ -1,0 +1,12 @@
+# Store text files with LF in the repository, check them out natively.
+*.html  text
+*.css   text
+*.js    text
+*.md    text
+*.json  text
+
+# Binary files must never be touched by line-ending conversion.
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.ico   binary
